@@ -1,7 +1,7 @@
 """CONVERTE HEXADECIMAIS EM BASE64"""
 
-string = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
-alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+alfabeto = "abcdefghijklmnopqrstuvwxyz"
+hex_index = "0123456789abcdefghi"
 
 class Hex_Em_Bits():
     def __init__(self):
@@ -95,8 +95,8 @@ class Hex_Em_Bits():
         
         # Considerando que há og_string e xor_string...
 
-        if len(og_bits) != len(to_xor_bits):
-            raise Exception("Tamanhos diferentes de strings")
+        #if len(og_bits) != len(to_xor_bits):
+        #    raise Exception("Tamanhos diferentes de strings")
         
         resultado = []
 
@@ -108,7 +108,7 @@ class Hex_Em_Bits():
         for four_bits in range(size):
             f_b = ""
             for bit in range(4):
-                if str(og_bits[four_bits][bit]) == str(to_xor_bits[four_bits][bit]):
+                if str(og_bits[four_bits][bit]) == str(to_xor_bits):
                     f_b += str(0)
                 else:
                     f_b += str(1)
@@ -116,8 +116,41 @@ class Hex_Em_Bits():
 
         return self.bits_em_hex("".join(str(r) for r in resultado))
 
+    def hex_to_base64 ():
+        bits = "".join([str(bit) for bit in bits])
+
+        bloco = None
+        caracteres_base64 = []
+        for i in range(0, len(bits), 6):
+            bloco = bits[i:i+6]
+
+            # Se o bloco for menor que 6, preencher com '0' à direita
+            if len(bloco) < 6:
+                bloco = bloco.ljust(6, '0')
+
+            caracteres_base64.append(alfabeto[int(bloco, 2)])
+
+        return "".join(c for c in caracteres_base64)
+    
+    def hex_to_text (self, bits):
+        bloco = None
+        txt = []
+        for i in range(0, len(bits), 8):
+            bloco = bits[i:i+8]
+
+            # Se o bloco for menor que 6, preencher com '0' à direita
+            if len(bloco) < 8:
+                bloco = bloco.rjust(8, '0')
+
+            txt.append(bloco)
+
+        return "".join(c for c in txt)
 
 if __name__ == "__main__":
 
     h = Hex_Em_Bits()
-    print(h.xor("1c0111001f010100061a024b53535009181c", "686974207468652062756c6c277320657965"))
+    for letter in hex_index:
+        r = h.xor("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736", letter)
+        print(h.hex_to_text(r))
+
+    
